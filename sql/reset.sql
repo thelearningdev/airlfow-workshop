@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS daily_report;
+DROP TABLE IF EXISTS sales_quarantine;
+DROP TABLE IF EXISTS daily_sales;
+DROP TABLE IF EXISTS books;

@@ -1,0 +1,12 @@
+[
+  {"isbn": "9780312944926", "quantity": 1, "total": 14.99},
+  {"isbn": "9780441569595", "quantity": 3, "total": 37.47},
+  {"isbn": "9780316440882", "quantity": 2, "total": 25.98},
+  {"isbn": "9780062457714", "quantity": 1, "total": 16.99},
+  {"isbn": "9780061096525", "quantity": 4, "total": 55.96},
+  {"isbn": "9781250301697", "quantity": 2, "total": 28.98},
+  {"isbn": "9780743273565", "quantity": 3, "total": 38.97},
+  {"isbn": "9780812971729", "quantity": 1, "total": 12.99},
+  {"isbn": "9780441013593", "quantity": -3, "total": -50.97},
+  {"isbn": "9780000000002", "quantity": 1, "total": 11.99}
+]

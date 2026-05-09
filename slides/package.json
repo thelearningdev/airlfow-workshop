@@ -1,0 +1,18 @@
+{
+  "name": "bookops-airflow-workshop-slides",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export slides.md --format pdf --output workshop-slides.pdf --timeout 60000 --with-clicks"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.3.0",
+    "@slidev/theme-default": "^0.25.0",
+    "playwright-chromium": "^1.50.0"
+  },
+  "dependencies": {
+    "slidev-theme-thelearningdev": "^0.0.1"
+  }
+}

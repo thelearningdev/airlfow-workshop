@@ -1,0 +1,12 @@
+[
+  {"isbn": "9780547928227", "quantity": 5, "total": 59.95},
+  {"isbn": "9780062457714", "quantity": 2, "total": 33.98},
+  {"isbn": "9780316769174", "quantity": 1, "total": 12.49},
+  {"isbn": "9780425274927", "quantity": 3, "total": 41.97},
+  {"isbn": "9780441569595", "quantity": 2, "total": 24.98},
+  {"isbn": "9780743273565", "quantity": 4, "total": 51.96},
+  {"isbn": "9780812971729", "quantity": 1, "total": 12.99},
+  {"isbn": "9780062561022", "quantity": 2, "total": 29.98},
+  {"isbn": "9780316440882", "quantity": -2, "total": -25.98},
+  {"isbn": "9780000000004", "quantity": 1, "total": 8.99}
+]
