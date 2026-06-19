@@ -6,11 +6,11 @@ from airflow.sdk import Asset
 
 
 @dag(
-    dag_id="04_genre_report_starter",
-    start_date=datetime(2026, 5, 1),
+    dag_id="13_genre_report_starter",
+    start_date=datetime(2026, 5, 5),
     schedule=Asset("daily_sales"),
     catchup=False,
-    tags=["starter"],
+    tags=["bookshop", "starter"],
 )
 def genre_report():
 

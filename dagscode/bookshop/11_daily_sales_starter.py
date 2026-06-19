@@ -5,16 +5,17 @@ from airflow.sdk import dag, task, Asset
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 
-REPO_ROOT = Path(__file__).parent.parent
+REPO_ROOT = Path(__file__).parent.parent.parent
 raw_sales_asset = Asset("raw_sales_starter")
 
 
 @dag(
-    dag_id="02_daily_sales_starter",
-    start_date=datetime(2026, 4, 30),
+    dag_id="11_daily_sales_starter",
+    start_date=datetime(2026, 5, 5),
+    end_date=datetime(2026, 5, 16),
     schedule="@daily",
     catchup=True,
-    tags=["starter"],
+    tags=["bookshop", "starter"],
 )
 def daily_sales():
 

@@ -20,3 +20,5 @@ airflow.db-wal
 data/amazon-books-data/*.csv
 .playwright*
 venv
+dags/bookshop/
+dags/concepts/

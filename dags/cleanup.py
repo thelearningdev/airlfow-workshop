@@ -7,15 +7,15 @@ from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 
-REPO_ROOT = Path(__file__).parent.parent.parent
+REPO_ROOT = Path(__file__).parent.parent
 
 
 @dag(
-    dag_id="05_cleanup_tables",
+    dag_id="cleanup_tables",
     start_date=datetime(2026, 1, 1),
     schedule=None,
     catchup=False,
-    tags=["solution", "starter"],
+    tags=["bookshop", "solution", "starter"],
 )
 def cleanup_tables():
 

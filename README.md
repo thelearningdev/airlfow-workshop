@@ -4,9 +4,9 @@ Hands-on workshop scaffold for teaching Apache Airflow 3.2 through a fictional B
 
 [Slide deck (PDF)](slides/workshop-slides.pdf)
 
-> IMPORTANT 🚨: Please complete the following setup before the tutorial. We need to pull(download) docker images and install packages, let's do it faster at the comfort of our home WIFI.
+> IMPORTANT: Please complete the following setup before the tutorial. We need to pull Docker images and install packages -- do it at home on fast WIFI.
 
-## Setup 
+## Setup
 
 ### Prerequisites
 
@@ -15,30 +15,31 @@ Hands-on workshop scaffold for teaching Apache Airflow 3.2 through a fictional B
 
 ### Using Github Codespaces
 
-If your local system doesn't allow you to install things, you can use github codespaces. Click on Code(top right) -> Codespaces -> Create new codespaces on main
+If your local system doesn't allow you to install things, you can use GitHub Codespaces. Click on Code (top right) -> Codespaces -> Create new codespace on main.
 
 ![as an alternative use github codespaces](assets/images/github-codespaces.png)
 
-If you use codespace instead of using localspace you will use something like this `https://humble-enigma-4xvq5wgx66cqppv-8080.app.github.dev/`
-Replace - `humble-enigma-4xvq5wgx66cqppv` - with your unique codespace name
+If you use Codespaces instead of local, your Airflow URL will look like:
+`https://humble-enigma-4xvq5wgx66cqppv-8080.app.github.dev/`
 
-PORTS
-- 8080 for airflow
-- 5432 for postgres
-- 8501 for analytics app
+Replace `humble-enigma-4xvq5wgx66cqppv` with your unique codespace name.
+
+Ports:
+- 8080 for Airflow
+- 5432 for Postgres
+- 8501 for the analytics app
 
 ### Goal: Airflow Environment
 
 To get the Airflow home page after logging in
 ![airflow home screen screenshot](assets/images/airflow-home-screen.png)
-
 ### Clone this repo
 
-```
+```bash
 git clone git@github.com:thelearningdev/pyconus-2026-apache-airflow-tutorial.git
 ```
 
-### Setup Local Python Environment
+### Option A: Local Python Environment
 
 ```bash
 python3 -m venv .venv
@@ -46,11 +47,17 @@ source .venv/bin/activate
 export AIRFLOW_HOME=$PWD # important if not airflow will take your home folder for setting up airflow
 pip install --upgrade pip
 pip install -r requirements.txt
+./scripts/start_airflow_standalone.sh
 ```
 
-### Docker Compose
+Login credentials are generated on first run -- check `simple_auth_manager_passwords.json.generated`.
 
-We will use `docker-compose` to run our airflow system, a postgres db and an analytics app
+Before running bookshop DAGs, add the `bookshop_postgres` connection in Airflow UI (Admin > Connections):
+- Conn ID: `bookshop_postgres`
+- Conn Type: `Postgres`
+- Host: `localhost`, Database: `bookops`, Login: `airflow`, Password: `airflow`, Port: `5432`
+
+### Option B: Docker Compose
 
 ```bash
 docker compose up --build
@@ -58,83 +65,86 @@ docker compose up --build
 
 ## Setup Check
 
+### 1. Airflow is up and running
 
-### 1. Airflow is up and Running
-
-Open [http://localhost:8080](http://localhost:8080)
-
-![airflow login screen screenshot](assets/images/airflow-login.png)
-
-and sign in with 
-
-
-```
-username: admin
-password: <find-in-file-simple_auth_manager_passwords.json.generated>
-```
+Open [http://localhost:8080](http://localhost:8080) and sign in with the credentials from `simple_auth_manager_passwords.json.generated` 
 
 ![airflow home screen screenshot](assets/images/airflow-home-screen.png)
 
+### 2. Airflow shell
 
-### 2. Airflow Shell
+On a new terminal:
 
-On a new terminal run
-
-```
+```bash
 docker compose exec airflow /bin/bash
 ```
-On the shell that opens run
 
----
+Then inside the shell:
 
-```
+```bash
 airflow dags list
 ```
-You will see a list of all the dags in the `dags/` folder
+
+You won't see anything at the moment, but by the end of the workshop, you will have more dags.
 
 ### 3. Postgres DB tables
 
-You can use a postgres client like pgadmin or dbeaver(my favorite) or any other postgres explorer of your choice
-You need to connect two db's one is for our data engineering stuff, one is used by airflow.
-After connecting to the DB you should able to explore the tables like below
+Connect with a client like DBeaver or pgAdmin using:
+
+```
+postgresql://airflow:airflow@localhost:5432/airflow   # Airflow metadata
+postgresql://airflow:airflow@localhost:5432/bookops   # Workshop data
+```
 
 ![dbeaver screenshot sample after connecting to the DBs](assets/images/dbeaver-tables.png)
 
-> Note that you're connecting to two databases running in your docker container. One to load the books data another to hold airflow related information. O
+### 4. Analytics app
 
-```
-postgresql+psycopg://airflow:airflow@localhost:5432/airflow
-postgresql://airflow:airflow@localhost:5432/bookops
-```
+Open [http://localhost:8501/](http://localhost:8501/) (Docker only). You will see `BookShop Pipeline Dashboard`. Errors are expected until you run the pipeline.
 
-### 4. Analytics App
-
-1. Open [http://localhost:8501/](http://localhost:8501/) on your browser.
-2. You will see `BookShop Pipeline Dashboard`
-3. Don't worry about the errors, we run the pipeline to fill up this dashboard.
-
-
-> End of Setup. The rest we can do it at the workshop
-  
+> End of Setup. The rest we do at the workshop.
 
 ## Exercises
-- [All Exercises are in exercise.md](./exercises.md)
+
+Exercises are in the [`exercises/`](./exercises.md) folder, one file per exercise (00-10 + reference).
+
+## Curriculum
+
+**Concepts track (00-09)** -- Airflow mechanics in isolation, no database:
+
+| Exercise | Topic |
+|----------|-------|
+| 00 | DAG anatomy, `@task`, `>>` |
+| 01 | Task dependencies |
+| 02 | Branching, `trigger_rule` |
+| 03 | Task context |
+| 04 | XCom push/pull |
+| 05 | Retries and timeouts |
+| 06 | Connections and Hooks |
+| 07 | Sensors |
+| 08 | Scheduling, catchup, `{{ ds }}` |
+| 09 | Assets |
+
+**Bookshop track (10-13)** -- full ETL pipeline against Postgres:
+
+| Exercise | Airflow Topics | DE Topics |
+|----------|---------------|-----------|
+| 10 | PostgresHook, idempotency | CSV ingestion, ON CONFLICT upsert |
+| 11 | schedule, catchup, `{{ ds }}`, XCom | Incremental loads, backfill |
+| 12 | `@task.branch`, `trigger_rule`, Assets | Data quality, quarantine pattern |
+| 13 | Dynamic task mapping, Assets | Parallel aggregation, reporting mart |
+
+Starter files are in `dagscode/` with `_starter.py` and `_solution.py` variants. Copy the starter you're working on into `dags/` for Airflow to pick it up.
 
 ## Notes
 
-1. Anytime Airflow feels clumsy run we can reset airflow db for a cleaner setup
+**Reset Airflow DB** if things get into a bad state:
 
-```
-docker-compose exec airflow /bin/bash
-```
-
-Will open the airflow container shell. In there run
-
-```
+```bash
+docker compose exec airflow /bin/bash
 airflow db reset -y
 airflow db migrate
 airflow dags reserialize
 ```
 
-2. If your tasks are not getting scheduled or running for any reason, restart the airflow terminal/docker container, you should be good. Since we are using standalone version, rarely everything gets mushed together
-
+If tasks are not scheduling or running, restart the Airflow terminal or Docker container.

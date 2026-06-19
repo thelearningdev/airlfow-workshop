@@ -1,28 +1,25 @@
 from datetime import datetime, timedelta
-from pathlib import Path
 
 from airflow.sdk import dag, task
 from airflow.providers.standard.operators.hitl import ApprovalOperator
 from airflow.sdk import Asset
 
 
-REPO_ROOT = Path(__file__).parent.parent
-
 raw_sales_asset = Asset("raw_sales_starter")
 
 
 @dag(
-    dag_id="03b_validate_sales_starter",
-    start_date=datetime(2026, 5, 1),
+    dag_id="12_validate_sales_starter",
+    start_date=datetime(2026, 5, 5),
     schedule=raw_sales_asset,
     catchup=True,
-    tags=["starter"],
+    tags=["bookshop", "starter"],
 )
 def validate_sales():
 
     @task(outlets=Asset("sales_quarantine"))
     def validate_and_insert(**context):
-        # TODO 1a: Read the date from the triggering asset event (same pattern as Exercise 3a).
+        # TODO 1a: Read the date from the triggering asset event (same pattern as Exercise 09 -- Assets).
         #   events = context["triggering_asset_events"].get(raw_sales_asset, [])
         #   ds = events[0].extra["date"]
 

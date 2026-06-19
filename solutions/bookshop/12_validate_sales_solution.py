@@ -9,11 +9,12 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 raw_sales_asset = Asset("raw_sales")
 
 @dag(
-    dag_id="03b_validate_sales",
-    start_date=datetime(2026, 4, 30),
+    dag_id="12_validate_sales_solution",
+    start_date=datetime(2026, 5, 5),
+    
     schedule=raw_sales_asset,
     catchup=True,
-    tags=["solution"],
+    tags=["bookshop", "solution"],
 )
 def validate_sales():
     @task(outlets=Asset("sales_quarantine"))

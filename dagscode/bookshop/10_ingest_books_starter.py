@@ -1,4 +1,4 @@
-import csv
+import csv  # noqa: F401
 from datetime import datetime
 from pathlib import Path
 
@@ -11,40 +11,33 @@ REPO_ROOT = Path(__file__).parent.parent.parent
 
 
 @dag(
-    dag_id="01_ingest_books",
+    dag_id="10_ingest_books_starter",
     start_date=datetime(2026, 1, 1),
     schedule=None,
     catchup=False,
-    tags=["solution"],
+    tags=["bookshop", "starter"],
 )
 def ingest_books():
 
     create_tables = SQLExecuteQueryOperator(
         task_id="create_tables",
         conn_id="bookshop_postgres",
-        sql= (REPO_ROOT / "sql" / "schema.sql").read_text()
+        sql=(REPO_ROOT / "sql" / "schema.sql").read_text(),
     )
 
     @task
     def load_books():
         hook = PostgresHook(postgres_conn_id="bookshop_postgres")
 
+        # TODO 1: Read data/books.csv and build a list of row tuples.
+        # Use csv.reader, skip the header row with next(reader).
+        # Each row should be a tuple: (isbn, title, author, genre, price)
         rows = []
-        with open(REPO_ROOT / "data" / "books.csv") as f:
-            # read file as iterable of tuples
-            reader = csv.reader(f)
 
-            #  skipping header row
-            next(reader)
-            rows = [tuple(row) for row in reader]
+        # TODO 2: Insert rows into the books table using hook.insert_rows.
+        # Use replace=True and replace_index="isbn" to make it safe to rerun.
+        # target_fields=["isbn", "title", "author", "genre", "price"]
 
-        hook.insert_rows(
-            table="books",
-            rows=rows,
-            target_fields=["isbn", "title", "author", "genre", "price"],
-            replace=True,
-            replace_index="isbn",
-        )
         return len(rows)
 
     reconcile = SQLExecuteQueryOperator(

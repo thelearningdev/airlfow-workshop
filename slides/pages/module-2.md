@@ -30,7 +30,7 @@ layout: blue-sidebar
 ```python
 @dag(
     schedule="@daily",        # run once per day
-    start_date=datetime(2026, 5, 1),
+    start_date=datetime(2026, 5, 5),
     catchup=True,             # backfill all days since start_date
 )
 ```
@@ -61,7 +61,7 @@ layout: blue-sidebar
 ```python
 @dag(
     schedule="@daily",        # run once per day
-    start_date=datetime(2026, 5, 1),
+    start_date=datetime(2026, 5, 5),
     catchup=True,             # backfill all days since start_date to today
 )
 ```

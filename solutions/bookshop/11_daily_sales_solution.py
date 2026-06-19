@@ -10,11 +10,12 @@ REPO_ROOT = Path(__file__).parent.parent.parent
 
 
 @dag(
-    dag_id="02_daily_sales",
+    dag_id="11_daily_sales_solution",
     start_date=datetime(2026, 5, 5),
+    end_date=datetime(2026, 5, 16),
     schedule="@daily",
     catchup=True,
-    tags=["solution"],
+    tags=["bookshop", "solution"],
 )
 def daily_sales():
     @task
